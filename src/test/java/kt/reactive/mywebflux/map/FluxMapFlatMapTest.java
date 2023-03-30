@@ -70,6 +70,11 @@ public class FluxMapFlatMapTest {
 //        System.out.println();
 //        System.out.println("New Flux:");
 //        transformedFlux.subscribe(name -> System.out.print(name + " "));
+        Flux<Mono<String>> map = Flux.fromArray(new String[]{"Tom", "Melissa", "Steven", "Megan"})
+                .map(name -> Mono.just(name.concat(" modified")));
+
+        Flux<String> stringFlux = Flux.fromArray(new String[]{"Tom", "Melissa", "Steven", "Megan"})
+                .flatMap(name -> Mono.just(name.concat(" modified")));
 
         Flux.fromArray(new String[]{"Tom", "Melissa", "Steven", "Megan"})
                 .map(name -> Mono.just(name.concat(" modified")))
@@ -99,6 +104,7 @@ public class FluxMapFlatMapTest {
         Flux.fromIterable(stringList)
                 //word.split("")의 리턴타입 Array String[]
                 .flatMap(word -> Flux.fromArray(word.split("")))
+                //.map(word -> Flux.fromArray(word.split("")))
                 .sort()  //정렬
                 .distinct() //중복제거
                 .zipWith(range, (word,line) -> line + "=" + word)
