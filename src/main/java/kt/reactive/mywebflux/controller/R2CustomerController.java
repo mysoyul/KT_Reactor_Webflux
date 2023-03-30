@@ -1,7 +1,9 @@
 package kt.reactive.mywebflux.controller;
 
 import kt.reactive.mywebflux.entity.Customer;
+import kt.reactive.mywebflux.exception.CustomAPIException;
 import kt.reactive.mywebflux.repository.R2CustomerRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.web.bind.annotation.*;
@@ -44,5 +46,22 @@ public class R2CustomerController {
                 .doOnNext(savedCustomer -> sinksMany.tryEmitNext(savedCustomer))
                 .log();
     }
+    @GetMapping("/{id}")
+    public Mono<Customer> findCustomerById(@PathVariable Long id) {
+        return customerRepository.findById(id)
+                .switchIfEmpty(Mono.error(
+                                new CustomAPIException("Customer Not Found with id " + id, HttpStatus.NOT_FOUND)
+                        )
+                );
+    }
+
+    @GetMapping("/name/{lastName}")
+    public Flux<Customer> findCustomerByName(@PathVariable String lastName){
+        return customerRepository.findByLastName(lastName)
+                .switchIfEmpty(Mono.error(
+                        new CustomAPIException("Customer Not Found with lastName " + lastName, HttpStatus.NOT_FOUND)
+                ));
+    }
+
 
 }
