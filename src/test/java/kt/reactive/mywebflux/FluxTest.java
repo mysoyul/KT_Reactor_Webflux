@@ -51,8 +51,8 @@ public class FluxTest {
         stringFlux.subscribe(new Subscriber<String>() {
             @Override
             public void onSubscribe(Subscription s) {
-                //s.request(Integer.MAX_VALUE);
-                s.request(2);
+                s.request(Integer.MAX_VALUE);
+                //s.request(2);
             }
             @Override
             public void onNext(String s) {
