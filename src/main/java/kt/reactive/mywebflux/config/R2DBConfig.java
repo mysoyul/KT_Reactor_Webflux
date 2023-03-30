@@ -1,6 +1,8 @@
 package kt.reactive.mywebflux.config;
 
 import io.r2dbc.spi.ConnectionFactory;
+import kt.reactive.mywebflux.entity.Customer;
+import kt.reactive.mywebflux.repository.R2CustomerRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -9,8 +11,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.r2dbc.config.EnableR2dbcAuditing;
 import org.springframework.r2dbc.connection.init.ConnectionFactoryInitializer;
 import org.springframework.r2dbc.connection.init.ResourceDatabasePopulator;
-import reactive.r2dbc.customer.entity.Customer;
-import reactive.r2dbc.customer.repository.R2CustomerRepository;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
