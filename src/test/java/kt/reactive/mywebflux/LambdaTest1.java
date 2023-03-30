@@ -61,10 +61,11 @@ public class LambdaTest1 {
     */
     @Test
     public void lambdaTest() {
-        //Functional Interface가 가진 추상메서드를 재정의할 때 람다식으로 작성하기
+        //Functional Interface가 가진 추상 메서드를 재정의할 때 람다식으로 작성하기
 
         // class MyRunnable implements Runnable => Thread(new MyRunnable())
         //1. Anonymous Inner Class
+        // class MyRunnable implements Runnable {} - new MyRunnable()
         Thread t1 = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -88,7 +89,7 @@ public class LambdaTest1 {
         });
 
         //2. Lambda Expression
-        stringList.forEach(val -> System.out.println("val = " +val));
+        stringList.forEach(val -> System.out.println(val));
         //3. Method Reference
         stringList.forEach(System.out::println);
     }
