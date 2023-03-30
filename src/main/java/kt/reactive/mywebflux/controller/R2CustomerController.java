@@ -3,10 +3,10 @@ package kt.reactive.mywebflux.controller;
 import kt.reactive.mywebflux.entity.Customer;
 import kt.reactive.mywebflux.repository.R2CustomerRepository;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.codec.ServerSentEvent;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 
 import java.time.Duration;
@@ -29,4 +29,20 @@ public class R2CustomerController {
     public Flux<Customer> findAllCustomers() {
         return customerRepository.findAll().delayElements(Duration.ofSeconds(1)).log();
     }
+
+    @GetMapping("/sse")
+    public Flux<ServerSentEvent<Customer>> findAllCustomerSSE() {
+        return sinksMany.asFlux()
+                .mergeWith(customerRepository.findAll())
+                .map(customer -> ServerSentEvent.builder(customer).build())
+                .doOnCancel(() -> sinksMany.asFlux().blockLast());
+    }
+    @PostMapping
+    public Mono<Customer> saveCustomer(@RequestBody Customer customer) {
+        //tryEmitNext : Try emitting a non-null element, generating an onNext signal.
+        return customerRepository.save(customer)
+                .doOnNext(savedCustomer -> sinksMany.tryEmitNext(savedCustomer))
+                .log();
+    }
+
 }
