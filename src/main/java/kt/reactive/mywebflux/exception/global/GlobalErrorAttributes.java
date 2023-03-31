@@ -19,7 +19,8 @@ public class GlobalErrorAttributes extends DefaultErrorAttributes {
         Map<String, Object> errorMap = new HashMap<>();
         Throwable error = super.getError(request);
 
-        if (error instanceof CustomAPIException) {
+        //if (error instanceof CustomAPIException) {
+        if(error instanceof  RuntimeException) {
             CustomAPIException customAPIException = (CustomAPIException) error;
             errorMap.put("timestamp", new Date());
             errorMap.put("message", customAPIException.getMessage());
