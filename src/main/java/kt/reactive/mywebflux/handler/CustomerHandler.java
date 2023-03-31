@@ -27,8 +27,8 @@ public class CustomerHandler {
     public Mono<ServerResponse> getCustomer(ServerRequest request) {
         Long id = Long.parseLong(request.pathVariable("id"));
         return customerRepository.findById(id)
-                .flatMap(customer -> ServerResponse.ok()
-                        .contentType(MediaType.APPLICATION_JSON)
+                .flatMap(customer -> ServerResponse.ok()  //ServerResponse.BodyBuilder
+                        .contentType(MediaType.APPLICATION_JSON)  //ServerResponse.BodyBuilder
                         .body(BodyInserters.fromValue(customer))
                 ).switchIfEmpty(getError(id));
     }
