@@ -60,12 +60,12 @@ public class CustomerHandler {
                             existCustomer.setLastName(customer.getLastName());
                             return customerRepository.save(existCustomer);
                         })
-        );
+        ).switchIfEmpty(Mono.error(new CustomAPIException("Customer Not Found Id " + id, HttpStatus.NOT_FOUND)));
+
         return updatedCustomerMono.flatMap(customer ->
                         ServerResponse.accepted()
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .bodyValue(customer))
-                .switchIfEmpty(getError(id));
+                                .bodyValue(customer));
     }
 
 }
