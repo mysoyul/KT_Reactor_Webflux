@@ -16,7 +16,6 @@ import reactor.core.publisher.Mono;
 public class CustomerHandler {
     private final R2CustomerRepository customerRepository;
     private Mono<ServerResponse> response406 = ServerResponse.status(HttpStatus.NOT_ACCEPTABLE).build();
-
     public Mono<ServerResponse> getCustomers(ServerRequest request) {
         Flux<Customer> customerFlux = customerRepository.findAll();
         return ServerResponse.ok() //ServerResponse.BodyBuilder
