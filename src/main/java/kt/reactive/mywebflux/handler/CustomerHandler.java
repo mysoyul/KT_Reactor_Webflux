@@ -18,7 +18,7 @@ import reactor.core.publisher.Mono;
 public class CustomerHandler {
     private final R2CustomerRepository customerRepository;
     private Mono<ServerResponse> response406 =
-            ServerResponse.status(HttpStatus.NOT_ACCEPTABLE).build();
+            ServerResponse.status(HttpStatus.NOT_ACCEPTABLE).build(); //HttpStatus.Series.CLIENT_ERROR
     public Mono<ServerResponse> getCustomers(ServerRequest request) {
         Flux<Customer> customerFlux = customerRepository.findAll();
         return ServerResponse.ok() //ServerResponse.BodyBuilder
@@ -40,9 +40,9 @@ public class CustomerHandler {
     public Mono<ServerResponse> saveCustomer(ServerRequest request) {
         Mono<Customer> unSavedCustomerMono = request.bodyToMono(Customer.class);
         return unSavedCustomerMono.flatMap(customer ->
-                customerRepository.save(customer)
+                customerRepository.save(customer) //Mono<Customer>
                         .flatMap(savedCustomer ->
-                                ServerResponse.accepted()
+                                ServerResponse.accepted() //ACCEPTED: 202
                                         .contentType(MediaType.APPLICATION_JSON)
                                         .bodyValue(savedCustomer)
                         )
