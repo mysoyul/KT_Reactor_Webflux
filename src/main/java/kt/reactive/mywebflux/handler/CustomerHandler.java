@@ -68,4 +68,13 @@ public class CustomerHandler {
                                 .bodyValue(customer));
     }
 
+    public Mono<ServerResponse> deleteCustomer(ServerRequest request) {
+        Long id = Long.parseLong(request.pathVariable("id"));
+        return customerRepository.findById(id)
+                .flatMap(existCustomer ->
+                        ServerResponse.ok()
+                                .build(customerRepository.delete(existCustomer)))
+                .switchIfEmpty(getError(id));
+    }
+
 }

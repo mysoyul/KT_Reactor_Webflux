@@ -18,7 +18,8 @@ public class CustomerRouterFunction {
                 .route(GET("/router/r2customers"), customerHandler::getCustomers)
                 .andRoute(GET("/router/r2customers/{id}"), customerHandler::getCustomer)
                 .andRoute(POST("/router/r2customers"), customerHandler::saveCustomer)
-                .andRoute(PUT("/router/r2customers/{id}"), customerHandler::updateCustomer);
+                .andRoute(PUT("/router/r2customers/{id}"), customerHandler::updateCustomer)
+                .andRoute(DELETE("/router/r2customers/{id}"), customerHandler::deleteCustomer);
 //        return RouterFunctions.route(GET("/router/r2customers"), new HandlerFunction<ServerResponse>() {
 //            @Override
 //            public Mono<ServerResponse> handle(ServerRequest request) {
