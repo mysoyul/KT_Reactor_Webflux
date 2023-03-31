@@ -5,6 +5,7 @@ import kt.reactive.mywebflux.exception.CustomAPIException;
 import kt.reactive.mywebflux.repository.R2CustomerRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
@@ -76,5 +77,12 @@ public class R2CustomerController {
         ));
     }
 
+    @DeleteMapping("/{id}")
+    public Mono<ResponseEntity<Void>> deleteCustomer(@PathVariable Long id) {
+        return customerRepository.findById(id)
+                .flatMap(existCust ->
+                        customerRepository.delete(existCust).then(Mono.just(ResponseEntity.ok().<Void>build()))
+                ).defaultIfEmpty(ResponseEntity.notFound().build());
+    }
 
 }
