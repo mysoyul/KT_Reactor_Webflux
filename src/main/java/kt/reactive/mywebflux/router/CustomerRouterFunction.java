@@ -14,12 +14,12 @@ public class CustomerRouterFunction {
     public RouterFunction<ServerResponse> routerFunction(CustomerHandler customerHandler) {
         //route() 메서드이 2번째 아규먼트 HandlerFunction
         // HandlerFunction의 추상메서드 reactor.core.publisher.Mono<T> handle(ServerRequest request)
-        //return RouterFunctions.route(GET("/router/r2customers"), customerHandler::getCustomers);
-        return RouterFunctions.route(GET("/router/r2customers"), new HandlerFunction<ServerResponse>() {
-            @Override
-            public Mono<ServerResponse> handle(ServerRequest request) {
-                return customerHandler.getCustomers(request);
-            }
-        });
+        return RouterFunctions.route(GET("/router/r2customers"), customerHandler::getCustomers);
+//        return RouterFunctions.route(GET("/router/r2customers"), new HandlerFunction<ServerResponse>() {
+//            @Override
+//            public Mono<ServerResponse> handle(ServerRequest request) {
+//                return customerHandler.getCustomers(request);
+//            }
+//        });
     }
 }
