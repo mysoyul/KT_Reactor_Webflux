@@ -19,14 +19,19 @@ public class GlobalErrorAttributes extends DefaultErrorAttributes {
         Map<String, Object> errorMap = new HashMap<>();
         Throwable error = super.getError(request);
 
-        //if (error instanceof CustomAPIException) {
-        if(error instanceof  RuntimeException) {
+        if (error instanceof CustomAPIException) {
+        //if(error instanceof  RuntimeException) {
             CustomAPIException customAPIException = (CustomAPIException) error;
             errorMap.put("timestamp", new Date());
             errorMap.put("message", customAPIException.getMessage());
             errorMap.put("status", customAPIException.getHttpStatus());
             errorMap.put("endpoint url", request.path());
         }
+
+        errorMap.put("message", error.getMessage());
+        errorMap.put("status", error.getCause().toString());
+        errorMap.put("path", request.path());
+
         return errorMap;
     }
 }

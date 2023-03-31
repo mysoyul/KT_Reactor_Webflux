@@ -29,7 +29,7 @@ public class CustomerRouterFunction {
             @RouterOperation(path = "/router/r2customers/{id}", method = RequestMethod.GET,
                     beanClass = CustomerHandler.class, beanMethod = "getCustomer",
                     operation = @Operation(operationId = "getCustomer",
-                            parameters = {@Parameter(in = ParameterIn.PATH, name = "id")})
+                            parameters = {@Parameter(in = ParameterIn.PATH, name = "id", required = true, allowEmptyValue = false)})
             ),
             @RouterOperation(path = "/router/r2customers", method = RequestMethod.POST,
                     beanClass = CustomerHandler.class, beanMethod = "saveCustomer",
